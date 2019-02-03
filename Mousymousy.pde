@@ -8,6 +8,7 @@ void setup() {
   gridSize = 64;
   grid = new int[len / gridSize][hei / gridSize]; // 20W / 15T 
   size(1280,960);
+  surface.setResizable(true);
   M = new Mouse(3, 3);
   Cheese = new Pickup(5, 5);
 }
