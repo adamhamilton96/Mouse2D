@@ -14,7 +14,7 @@ class Pickup {
         if(exists == true) {
             stroke(0);
             fill(255, 255, 0);
-            ellipse(x * 64 + 32, y * 64 + 32, 32, 32);
+            ellipse(x * gridWidth + gridWidth / 2, y * gridHeight + gridHeight / 2, gridWidth, gridHeight);
         }
     }
 

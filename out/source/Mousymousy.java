@@ -14,15 +14,17 @@ import java.io.IOException;
 
 public class Mousymousy extends PApplet {
 
-final int len = 1280, hei = 960;
+final int len = 640, hei = 640;
 Mouse M;
 Pickup Cheese;
-int gridSize;
+int gridHeight;
+int gridWidth;
 int[][] grid;
 
 public void setup() {
-  gridSize = 64;
-  grid = new int[len / gridSize][hei / gridSize]; // 20W / 15T 
+  gridHeight = height / 20;
+  gridWidth = width / 20;
+  grid = new int[len / gridWidth][hei / gridHeight]; //20
   
   surface.setResizable(true);
   M = new Mouse(3, 3);
@@ -30,6 +32,8 @@ public void setup() {
 }
 
 public void draw() {
+  gridHeight = height / 20;
+  gridWidth = width / 20;
   map();
   M.show();
   Cheese.show();
@@ -39,9 +43,9 @@ public void map() {
   background(0);
   stroke(0);
   fill(195, 82, 19);
-  for(int i = 0; i < len/gridSize; i++) { 
-    for(int j = 0; j < hei/gridSize; j++) {
-      rect(i * gridSize, j * gridSize, gridSize, gridSize);
+  for(int i = 0; i < 20; i++) { 
+    for(int j = 0; j < 20; j++) {
+      rect(i * gridWidth, j * gridHeight, gridWidth, gridHeight);
     }
   } 
 }
@@ -57,7 +61,7 @@ public void keyPressed() {
         Cheese.randomLoc();
       } 
       grid[M.x][M.y] = 1;
-    } else if (keyCode == DOWN && M.y < 14) {
+    } else if (keyCode == DOWN && M.y < 19) {
       M.dir = 3;
       grid[M.x][M.y] = 0;
       M.y++;
@@ -121,26 +125,26 @@ class Mouse {
    if(increasing == true) {
      increasing = false;
      switch(dir) {
-       case 1:   image(mouseUp1, x * gridSize, y * gridSize);
+       case 1:   image(mouseUp1, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
                  break;
-       case 2:   image(mouseRight1, x * gridSize, y * gridSize);
+       case 2:   image(mouseRight1, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
                  break;
-       case 3:   image(mouseDown1, x * gridSize, y * gridSize);
+       case 3:   image(mouseDown1, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
                  break;
-       case 4:   image(mouseLeft1, x * gridSize, y * gridSize);
+       case 4:   image(mouseLeft1, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
                  break;
      }
     
    } else{
      increasing = true;
      switch(dir) {
-       case 1:   image(mouseUp2, x * gridSize, y * gridSize);
+       case 1:   image(mouseUp2, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
                  break;
-       case 2:   image(mouseRight2, x * gridSize, y * gridSize);
+       case 2:   image(mouseRight2, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
                  break;
-       case 3:   image(mouseDown2, x * gridSize, y * gridSize);
+       case 3:   image(mouseDown2, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
                  break;
-       case 4:   image(mouseLeft2, x * gridSize, y * gridSize);
+       case 4:   image(mouseLeft2, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
                  break;
      }
   }
@@ -163,7 +167,7 @@ class Pickup {
         if(exists == true) {
             stroke(0);
             fill(255, 255, 0);
-            ellipse(x * 64 + 32, y * 64 + 32, 32, 32);
+            ellipse(x * gridWidth + gridWidth / 2, y * gridHeight + gridHeight / 2, gridWidth, gridHeight);
         }
     }
 
@@ -174,7 +178,7 @@ class Pickup {
         exists = true;
     }
 }
-  public void settings() {  size(1280,960); }
+  public void settings() {  size(640,640); }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "Mousymousy" };
     if (passedArgs != null) {

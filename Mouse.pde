@@ -32,26 +32,26 @@ class Mouse {
    if(increasing == true) {
      increasing = false;
      switch(dir) {
-       case 1:   image(mouseUp1, x * gridSize, y * gridSize);
+       case 1:   image(mouseUp1, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
                  break;
-       case 2:   image(mouseRight1, x * gridSize, y * gridSize);
+       case 2:   image(mouseRight1, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
                  break;
-       case 3:   image(mouseDown1, x * gridSize, y * gridSize);
+       case 3:   image(mouseDown1, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
                  break;
-       case 4:   image(mouseLeft1, x * gridSize, y * gridSize);
+       case 4:   image(mouseLeft1, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
                  break;
      }
     
    } else{
      increasing = true;
      switch(dir) {
-       case 1:   image(mouseUp2, x * gridSize, y * gridSize);
+       case 1:   image(mouseUp2, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
                  break;
-       case 2:   image(mouseRight2, x * gridSize, y * gridSize);
+       case 2:   image(mouseRight2, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
                  break;
-       case 3:   image(mouseDown2, x * gridSize, y * gridSize);
+       case 3:   image(mouseDown2, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
                  break;
-       case 4:   image(mouseLeft2, x * gridSize, y * gridSize);
+       case 4:   image(mouseLeft2, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
                  break;
      }
   }
