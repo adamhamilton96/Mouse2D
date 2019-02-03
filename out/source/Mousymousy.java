@@ -154,28 +154,50 @@ class Mouse {
 class Pickup {
     int x, y;
     int type; // 1 = Cheese
+    int img;
     boolean exists;
+
+    PImage cheeseUp;
+    PImage cheeseLeft;
+    PImage cheeseRight;
+    PImage cheeseDown;
 
     Pickup(int x_, int y_) {
         x = x_;
         y = y_;
         exists = true;
         grid[x][y] = 2;
+        img = 1;
+        cheeseUp = loadImage("/Images/Cheese/cheeseUp.png");
+        cheeseLeft = loadImage("/Images/Cheese/cheeseLeft.png");
+        cheeseRight = loadImage("/Images/Cheese/cheeseRight.png");
+        cheeseDown = loadImage("/Images/Cheese/cheeseDown.png");
     }
 
     public void show() {
         if(exists == true) {
             stroke(0);
             fill(255, 255, 0);
-            ellipse(x * gridWidth + gridWidth / 2, y * gridHeight + gridHeight / 2, gridWidth, gridHeight);
+            switch(img) {
+                case 1: image(cheeseUp, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
+                        break;
+                case 2: image(cheeseLeft, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
+                        break;
+                case 3: image(cheeseRight, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
+                        break;
+                case 4: image(cheeseDown, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
+                        break;
+            }
         }
     }
 
     public void randomLoc() {
         x = PApplet.parseInt(random(0, 19));
         y = PApplet.parseInt(random(0, 14));
-        grid[x][y] = 2;
+        if(grid[x][y] == 0) grid[x][y] = 2;
+        else randomLoc();
         exists = true;
+        img = PApplet.parseInt(random(1, 5));
     }
 }
   public void settings() {  size(640,640); }
