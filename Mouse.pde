@@ -41,7 +41,7 @@ class Mouse {
        case 4:   image(mouseLeft1, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
                  break;
      }
-    
+      
    } else{
      increasing = true;
      switch(dir) {

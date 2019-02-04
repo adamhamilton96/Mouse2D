@@ -14,12 +14,15 @@ import java.io.IOException;
 
 public class Mousymousy extends PApplet {
 
+// Grid Allocations 0 = EMPTY, 1 = MOUSE, 2 = WALL, 3 = CHEESE, 4 = KEY
 final int len = 640, hei = 640;
 Mouse M;
 Pickup Cheese;
+Pickup Key;
 int gridHeight;
 int gridWidth;
 int[][] grid;
+int score;
 
 public void setup() {
   gridHeight = height / 20;
@@ -28,7 +31,11 @@ public void setup() {
   
   surface.setResizable(true);
   M = new Mouse(3, 3);
-  Cheese = new Pickup(5, 5);
+  Cheese = new Pickup(5, 5, 1);
+  Key = new Pickup(9, 5, 2);
+  score = 0;
+  grid[7][7] = 2;
+  grid[7][8] = 2;
 }
 
 public void draw() {
@@ -37,14 +44,20 @@ public void draw() {
   map();
   M.show();
   Cheese.show();
+  Key.show();
+  fill(255);
+  textSize(32);
+  text(score, 0, 30);
 }
 
 public void map() {
   background(0);
   stroke(0);
-  fill(195, 82, 19);
   for(int i = 0; i < 20; i++) { 
     for(int j = 0; j < 20; j++) {
+      if(grid[i][j] == 2) {
+        fill(0);
+      } else fill(195, 82, 19);
       rect(i * gridWidth, j * gridHeight, gridWidth, gridHeight);
     }
   } 
@@ -52,41 +65,41 @@ public void map() {
 
 public void keyPressed() {
   if (key == CODED) {
-    if (keyCode == UP && M.y > 0) {
+    if (keyCode == UP && M.y > 0 && grid[M.x][M.y - 1] != 2) {
       M.dir = 1;
       grid[M.x][M.y] = 0;
       M.y--;
-      if(grid[M.x][M.y] == 2) {
+      if(grid[M.x][M.y] == 3) {
         Cheese.exists = false;
         Cheese.randomLoc();
-      } 
+      } else if(grid[M.x][M.y] == 4) Key.exists = false;
       grid[M.x][M.y] = 1;
-    } else if (keyCode == DOWN && M.y < 19) {
+    } else if (keyCode == DOWN && M.y < 19 && grid[M.x][M.y + 1] != 2) {
       M.dir = 3;
       grid[M.x][M.y] = 0;
       M.y++;
-      if(grid[M.x][M.y] == 2) {
+      if(grid[M.x][M.y] == 3) {
         Cheese.exists = false;
         Cheese.randomLoc();
-      } 
+      } else if(grid[M.x][M.y] == 4) Key.exists = false;
       grid[M.x][M.y] = 1;
-    } else if (keyCode == LEFT && M.x > 0) {
+    } else if (keyCode == LEFT && M.x > 0 && grid[M.x - 1][M.y] != 2) {
       M.dir = 4;
       grid[M.x][M.y] = 0;
       M.x--;
-      if(grid[M.x][M.y] == 2) {
+      if(grid[M.x][M.y] == 3) {
         Cheese.exists = false;
         Cheese.randomLoc();
-      } 
+      } else if(grid[M.x][M.y] == 4) Key.exists = false;
       grid[M.x][M.y] = 1;
-    } else if (keyCode == RIGHT && M.x < 19) {
+    } else if (keyCode == RIGHT && M.x < 19 && grid[M.x + 1][M.y] != 2) {
       M.dir = 2;
       grid[M.x][M.y] = 0;
       M.x++;
-      if(grid[M.x][M.y] == 2) {
+      if(grid[M.x][M.y] == 3) {
         Cheese.exists = false;
         Cheese.randomLoc();
-      } 
+      } else if(grid[M.x][M.y] == 4) Key.exists = false;
       grid[M.x][M.y] = 1;
     }
   }
@@ -134,7 +147,7 @@ class Mouse {
        case 4:   image(mouseLeft1, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
                  break;
      }
-    
+      
    } else{
      increasing = true;
      switch(dir) {
@@ -153,7 +166,7 @@ class Mouse {
 }  
 class Pickup {
     int x, y;
-    int type; // 1 = Cheese
+    int type; // 1 = Cheese, 2 = Key
     int img;
     boolean exists;
 
@@ -161,32 +174,40 @@ class Pickup {
     PImage cheeseLeft;
     PImage cheeseRight;
     PImage cheeseDown;
+    PImage keyUp;
 
-    Pickup(int x_, int y_) {
+    Pickup(int x_, int y_, int type_) {
+        loadImages();
         x = x_;
         y = y_;
+        type = type_;
         exists = true;
-        grid[x][y] = 2;
-        img = 1;
-        cheeseUp = loadImage("/Images/Cheese/cheeseUp.png");
-        cheeseLeft = loadImage("/Images/Cheese/cheeseLeft.png");
-        cheeseRight = loadImage("/Images/Cheese/cheeseRight.png");
-        cheeseDown = loadImage("/Images/Cheese/cheeseDown.png");
+        if(type == 1) {
+            grid[x][y] = 3;
+            img = 1;
+        } else if(type == 2) {
+            grid[x][y] = 4;
+        }
+
     }
 
     public void show() {
         if(exists == true) {
             stroke(0);
             fill(255, 255, 0);
-            switch(img) {
-                case 1: image(cheeseUp, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
-                        break;
-                case 2: image(cheeseLeft, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
-                        break;
-                case 3: image(cheeseRight, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
-                        break;
-                case 4: image(cheeseDown, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
-                        break;
+            if(type == 1) {
+                switch(img) {
+                    case 1: image(cheeseUp, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
+                            break;
+                    case 2: image(cheeseLeft, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
+                            break;
+                    case 3: image(cheeseRight, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
+                            break;
+                    case 4: image(cheeseDown, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
+                            break;
+                }
+            } else if(type == 2) {
+                image(keyUp, x * gridWidth, y * gridHeight, gridWidth, gridHeight);
             }
         }
     }
@@ -194,10 +215,19 @@ class Pickup {
     public void randomLoc() {
         x = PApplet.parseInt(random(0, 19));
         y = PApplet.parseInt(random(0, 14));
-        if(grid[x][y] == 0) grid[x][y] = 2;
+        if(grid[x][y] == 0) grid[x][y] = 3;
         else randomLoc();
         exists = true;
         img = PApplet.parseInt(random(1, 5));
+        score++;
+    }
+
+    public void loadImages() {
+        cheeseUp = loadImage("/Images/Cheese/cheeseUp.png");
+        cheeseLeft = loadImage("/Images/Cheese/cheeseLeft.png");
+        cheeseRight = loadImage("/Images/Cheese/cheeseRight.png");
+        cheeseDown = loadImage("/Images/Cheese/cheeseDown.png");
+        keyUp = loadImage("/Images/Keys/keyUp.png");
     }
 }
   public void settings() {  size(640,640); }
