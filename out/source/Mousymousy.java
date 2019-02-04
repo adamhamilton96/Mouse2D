@@ -22,12 +22,14 @@ Pickup Key;
 Level level1;
 int gridHeight;
 int gridWidth;
+int gridSize;
 int[][] grid;
 int score;
 
 public void setup() {
-  gridHeight = height / 20;
-  gridWidth = width / 20;
+  gridSize = 20;
+  gridHeight = height / gridSize;
+  gridWidth = width / gridSize;
   
   surface.setResizable(true);
   level1 = new Level();
@@ -40,8 +42,8 @@ public void setup() {
 }
 
 public void draw() {
-  gridHeight = height / 20;
-  gridWidth = width / 20;
+  gridHeight = height / gridSize;
+  gridWidth = width / gridSize;
   map();
   M.show();
   Cheese.show();
@@ -54,8 +56,8 @@ public void draw() {
 public void map() {
   background(0);
   stroke(0);
-  for(int i = 0; i < 20; i++) { 
-    for(int j = 0; j < 20; j++) {
+  for(int i = 0; i < gridSize; i++) { 
+    for(int j = 0; j < gridSize; j++) {
       if(grid[i][j] == 2) {
         fill(0);
       } else fill(195, 82, 19);
@@ -107,11 +109,16 @@ public void keyPressed() {
 }
 class Level {
     int[][] levelGrid;
+    Table table;
     
     Level() {
         levelGrid = new int[len / gridWidth][hei / gridHeight];
-        levelGrid[7][7] = 2;
-        levelGrid[7][8] = 2;
+        table = loadTable("E:/Programming/Processing/Mouse/LevelEditor/level/level1.csv", "header");
+        for (int i = 0; i < gridSize; i++) {
+            for(int j = 0; j < gridSize; j++) {
+                levelGrid[i][j] = table.getRow(i).getInt(j);
+            }
+        }
     }
 
     public int[][] getGrid() {

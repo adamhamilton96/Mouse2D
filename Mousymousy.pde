@@ -6,12 +6,14 @@ Pickup Key;
 Level level1;
 int gridHeight;
 int gridWidth;
+int gridSize;
 int[][] grid;
 int score;
 
 void setup() {
-  gridHeight = height / 20;
-  gridWidth = width / 20;
+  gridSize = 20;
+  gridHeight = height / gridSize;
+  gridWidth = width / gridSize;
   size(640,640);
   surface.setResizable(true);
   level1 = new Level();
@@ -24,8 +26,8 @@ void setup() {
 }
 
 void draw() {
-  gridHeight = height / 20;
-  gridWidth = width / 20;
+  gridHeight = height / gridSize;
+  gridWidth = width / gridSize;
   map();
   M.show();
   Cheese.show();
@@ -38,8 +40,8 @@ void draw() {
 void map() {
   background(0);
   stroke(0);
-  for(int i = 0; i < 20; i++) { 
-    for(int j = 0; j < 20; j++) {
+  for(int i = 0; i < gridSize; i++) { 
+    for(int j = 0; j < gridSize; j++) {
       if(grid[i][j] == 2) {
         fill(0);
       } else fill(195, 82, 19);
