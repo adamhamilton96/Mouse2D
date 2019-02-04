@@ -19,6 +19,7 @@ final int len = 640, hei = 640;
 Mouse M;
 Pickup Cheese;
 Pickup Key;
+Level level1;
 int gridHeight;
 int gridWidth;
 int[][] grid;
@@ -27,15 +28,15 @@ int score;
 public void setup() {
   gridHeight = height / 20;
   gridWidth = width / 20;
-  grid = new int[len / gridWidth][hei / gridHeight]; //20
   
   surface.setResizable(true);
+  level1 = new Level();
+  grid = level1.getGrid();
+  //grid = new int[len / gridWidth][hei / gridHeight]; //20x20
   M = new Mouse(3, 3);
   Cheese = new Pickup(5, 5, 1);
   Key = new Pickup(9, 5, 2);
   score = 0;
-  grid[7][7] = 2;
-  grid[7][8] = 2;
 }
 
 public void draw() {
@@ -103,6 +104,20 @@ public void keyPressed() {
       grid[M.x][M.y] = 1;
     }
   }
+}
+class Level {
+    int[][] levelGrid;
+    
+    Level() {
+        levelGrid = new int[len / gridWidth][hei / gridHeight];
+        levelGrid[7][7] = 2;
+        levelGrid[7][8] = 2;
+    }
+
+    public int[][] getGrid() {
+        return levelGrid;
+    }
+
 }
 class Mouse {
   int x, y;
