@@ -42,6 +42,7 @@ public void setup() {
 }
 
 public void draw() {
+  println(frameRate);
   gridHeight = height / gridSize;
   gridWidth = width / gridSize;
   map();
@@ -55,7 +56,7 @@ public void draw() {
 
 public void map() {
   background(0);
-  stroke(0);
+  noStroke();
   for(int i = 0; i < gridSize; i++) { 
     for(int j = 0; j < gridSize; j++) {
       if(grid[i][j] == 2) {
@@ -111,7 +112,7 @@ class Level {
     int[][] levelGrid;
     Table table;
     
-    Level() {
+    Level() { // Pass name to load specific level
         levelGrid = new int[len / gridWidth][hei / gridHeight];
         table = loadTable("E:/Programming/Processing/Mouse/LevelEditor/level/level1.csv", "header");
         for (int i = 0; i < gridSize; i++) {
